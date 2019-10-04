@@ -16,7 +16,7 @@ class MainViewModel : ViewModel() {
         val disposable = bookRepository.getBooksFromDB()
             .subscribe({
                 Log.e("From VM ", booksList.toString())
-                booksList.value = it as ArrayList<Book>
+                booksList.postValue(it as ArrayList<Book>)
               //  callBackToView.getBooksFromViewModel(booksList)
             }, {
 
