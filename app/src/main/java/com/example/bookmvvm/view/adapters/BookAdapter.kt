@@ -76,6 +76,4 @@ class BookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-
 }

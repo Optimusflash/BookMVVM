@@ -39,9 +39,10 @@ class MainActivity : AppCompatActivity() {
             bookAdapter.setupData(it)
         })
 
-
     }
 
-
-
+    override fun onDestroy() {
+        super.onDestroy()
+        mainViewModel.clearResources()
+    }
 }
