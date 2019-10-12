@@ -1,4 +1,4 @@
-package com.example.bookmvvm.view
+package com.example.bookmvvm.view.activities
 
 import android.os.Bundle
 import android.widget.LinearLayout
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
-        binding.apply {
+        with(binding) {
             bookRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
             val decoration = DividerItemDecoration(this@MainActivity, LinearLayout.VERTICAL)
             bookRecyclerView.addItemDecoration(decoration)
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.loadBooksFromRepository()
 
-        mainViewModel.booksList.observe(this, Observer<List<Book>> {
+        mainViewModel.booksList.observe(this, Observer {
             bookAdapter.setupData(it as ArrayList<Book>)
         })
 

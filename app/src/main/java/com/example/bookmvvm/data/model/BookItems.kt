@@ -6,3 +6,27 @@ data class BookItems(
     @SerializedName("items")
     val bookItems: List<Book>) {
 }
+
+data class Book (
+    // @PrimaryKey
+    @SerializedName("id")
+    val id: String,
+
+    @SerializedName("volumeInfo")
+    val bookInfo: BookInfo
+)
+
+data class BookInfo(
+    @SerializedName("title")
+    val title: String,
+
+    @SerializedName("description")
+    val description: String,
+
+    @SerializedName("imageLinks")
+    val bookImage: BookImage) {
+}
+
+data class BookImage(
+    @SerializedName("smallThumbnail")
+    val imageUrl: String)

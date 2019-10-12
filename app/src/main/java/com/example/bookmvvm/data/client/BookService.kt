@@ -7,9 +7,13 @@ import retrofit2.http.Query
 
 interface BookService {
 
-    //https://www.googleapis.com/books/v1/volumes?q=kotlin
+
 
     @GET("books/v1/volumes")
-    //fun getAllBooks(): Observable<List<Book>>
-    fun getAllBooks(@Query("q")searchString: String): Observable<BookItems>
+
+    fun getAllBooks(
+        @Query("q") searchString: String,
+        @Query("startIndex") pagStartIndex: Int,
+        @Query("maxResults") pagMaxResults: Int
+    ): Observable<BookItems>
 }
