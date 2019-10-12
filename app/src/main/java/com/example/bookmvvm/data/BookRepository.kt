@@ -10,17 +10,20 @@ import io.reactivex.schedulers.Schedulers
 
 class BookRepository {
 
-    private val bookDao = App.appDataBaseInstance().getBookDao()
-    private val retrofitClient = App.retrofitClientInstance().create(BookService::class.java)
+    //private val bookDao = App.appDataBaseInstance().getBookDao()
+    private val bookService = App.retrofitClientInstance().create(BookService::class.java)
 
     fun getBooksFromDB(): Observable<List<Book>> {
-        val observable = retrofitClient.getAllBooks()
-        return observable
-            .flatMap {
-                bookDao.insertAllBooks(it)
-                Observable.just(bookDao.getAllBooks())
-            }
+        val observable = bookService.getAllBooks("Heartstone")
+        return observable.flatMap {
+            Observable.just(it.bookItems)
+        }
+//            .flatMap {
+//                bookDao.insertAllBooks(it.bookItems)
+//                Observable.fromArray(bookDao.getAllBooks())
+//            }
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
     }
 }
+

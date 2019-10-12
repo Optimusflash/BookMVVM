@@ -1,6 +1,5 @@
 package com.example.bookmvvm.viewmodel
 
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,17 +10,18 @@ import io.reactivex.disposables.CompositeDisposable
 class MainViewModel : ViewModel() {
 
     private val bookRepository = BookRepository()
-    var booksList: MutableLiveData<ArrayList<Book>> = MutableLiveData()
-    var disposeBag = CompositeDisposable()
-    //lateinit var callBackToView: (list: List<Book> )->Unit
+
     val isLoading: ObservableField<Boolean> = ObservableField(false)
+
+    var booksList: MutableLiveData<List<Book>> = MutableLiveData()
+
+    private var disposeBag = CompositeDisposable()
 
     fun loadBooksFromRepository() {
         isLoading.set(true)
         val disposable = bookRepository.getBooksFromDB()
             .subscribe({
-                Log.e("From VM ", booksList.toString())
-                booksList.postValue(it as ArrayList<Book>)
+                booksList.postValue(it)
 
             }, {
 
@@ -31,9 +31,12 @@ class MainViewModel : ViewModel() {
         disposeBag.add(disposable)
     }
 
-    fun clearResources(){
+    override fun onCleared() {
+        super.onCleared()
         disposeBag.dispose()
     }
+
+
 
 
 }

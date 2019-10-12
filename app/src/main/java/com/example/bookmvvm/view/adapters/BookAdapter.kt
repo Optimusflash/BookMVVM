@@ -68,9 +68,9 @@ class BookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val textDescription: TextView = itemView.findViewById(R.id.rv_txt_description)
 
         fun bind(book: Book) {
-            Picasso.get().load(book.imageUrl).placeholder(R.drawable.ic_image_black_24dp).into(bookImageView)
-            textTitle.text = book.title
-            textDescription.text = book.description
+            Picasso.get().load(book.bookInfo.bookImage.imageUrl).placeholder(R.drawable.ic_image_black_24dp).into(bookImageView)
+            textTitle.text = book.bookInfo.title
+            textDescription.text = book.bookInfo.description
         }
     }
 

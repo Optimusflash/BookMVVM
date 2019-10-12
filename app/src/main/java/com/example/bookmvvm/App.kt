@@ -1,8 +1,6 @@
 package com.example.bookmvvm
 
 import android.app.Application
-import androidx.room.Room
-import com.example.bookmvvm.data.database.BookDataBase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,19 +11,20 @@ class App: Application() {
 
     companion object {
 
-        private var appDataBaseInstance:  BookDataBase? = null
+        //   private var appDataBaseInstance:  BookDataBase? = null
         private lateinit var appInstance: App
         private const val DATABASE_NAME = "BookDataBase"
-
-        private const val BASE_URL = "https://api.myjson.com/"
+        //https://www.googleapis.com/books/v1/volumes?q=kotlin
+        // private const val BASE_URL = "https://api.myjson.com/"
+        private const val BASE_URL = "https://www.googleapis.com/"
         private var retrofitClientInstance: Retrofit? = null
 
-        fun appDataBaseInstance(): BookDataBase {
-            if (appDataBaseInstance == null){
-                appDataBaseInstance = Room.databaseBuilder(appInstance, BookDataBase::class.java, DATABASE_NAME).build()
-            }
-            return appDataBaseInstance!!
-        }
+        /*  fun appDataBaseInstance(): BookDataBase {
+              if (appDataBaseInstance == null){
+                  appDataBaseInstance = Room.databaseBuilder(appInstance, BookDataBase::class.java, DATABASE_NAME).build()
+              }
+              return appDataBaseInstance!!
+          }*/
 
         fun retrofitClientInstance(): Retrofit{
             if (retrofitClientInstance==null){
