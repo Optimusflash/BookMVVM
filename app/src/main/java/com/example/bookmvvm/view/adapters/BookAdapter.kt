@@ -13,7 +13,6 @@ import com.squareup.picasso.Picasso
 class BookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        private const val TYPE_HEADER = 0
         private const val TYPE_FOOTER = 1
         private const val TYPE_ITEM = 2
     }
@@ -24,9 +23,6 @@ class BookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val layoutInflater = LayoutInflater.from(parent.context)
 
         return when (viewType) {
-            TYPE_HEADER -> {
-                HeaderViewHolder(layoutInflater.inflate(R.layout.header_layout, parent, false))
-            }
             TYPE_FOOTER -> {
                 FooterViewHolder(layoutInflater.inflate(R.layout.footer_layout, parent, false))
             }
@@ -37,19 +33,17 @@ class BookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is BookViewHolder) {
-            holder.bind(bookList[position-1])
+            holder.bind(bookList[position])
         }
 
     }
 
     override fun getItemCount(): Int {
-        return bookList.size+2
+        return bookList.size+1
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == 0) {
-            return TYPE_HEADER
-        } else if (position == bookList.size + 1) {
+        if (position == bookList.size) {
             return TYPE_FOOTER
         }
         return TYPE_ITEM
@@ -74,6 +68,6 @@ class BookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
     class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
