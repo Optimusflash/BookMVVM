@@ -1,23 +1,23 @@
 package com.example.bookmvvm.view.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookmvvm.R
 import com.example.bookmvvm.data.model.Book
-import com.squareup.picasso.Picasso
+import com.example.bookmvvm.view.viewholders.BookViewHolder
+import com.example.bookmvvm.view.viewholders.FooterViewHolder
 
 class BookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
+        private const val TYPE_ITEM = 0
         private const val TYPE_FOOTER = 1
-        private const val TYPE_ITEM = 2
     }
 
-    private val bookList: ArrayList<Book> = ArrayList()
+    private var isLoadingAdded = false
+
+    private var bookList: ArrayList<Book> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -39,35 +39,42 @@ class BookAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return bookList.size+1
+        return bookList.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == bookList.size) {
-            return TYPE_FOOTER
-        }
-        return TYPE_ITEM
+        return if (position == bookList.size - 1 && isLoadingAdded) {
+            TYPE_FOOTER
+        } else
+            TYPE_ITEM
     }
 
-    fun setupData(list: ArrayList<Book>) {
-        bookList.clear()
-        bookList.addAll(list)
-        notifyDataSetChanged()
-    }
-
-    class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private val bookImageView: ImageView = itemView.findViewById(R.id.rv_image_book)
-        private val textTitle: TextView = itemView.findViewById(R.id.rv_txt_title)
-        private val textDescription: TextView = itemView.findViewById(R.id.rv_txt_description)
-
-        fun bind(book: Book) {
-            Picasso.get().load(book.bookInfo.bookImage.imageUrl).placeholder(R.drawable.ic_image_black_24dp).into(bookImageView)
-            textTitle.text = book.bookInfo.title
-            textDescription.text = book.bookInfo.description
+    // Helpers
+    fun addAll(list: List<Book>) {
+        list.forEach {
+            addItem(it)
         }
     }
 
+    private fun addItem(book: Book) {
+        bookList.add(book)
+        val position = bookList.size - 1
+        notifyItemInserted(position)
+    }
 
-    class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    fun addLoadingFooter() {
+        isLoadingAdded = true
+        addItem(Book())
+    }
+
+    fun removeLoadingFooter() {
+        isLoadingAdded = false
+        if (!bookList.isNullOrEmpty()) {
+            val position = bookList.size - 1
+            bookList.remove(bookList[position])
+            notifyItemRemoved(position)
+        }
+    }
+
+
 }

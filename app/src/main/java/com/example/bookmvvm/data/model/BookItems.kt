@@ -10,11 +10,13 @@ data class BookItems(
 data class Book (
     // @PrimaryKey
     @SerializedName("id")
-    val id: String,
+    val id: String?,
 
     @SerializedName("volumeInfo")
-    val bookInfo: BookInfo
-)
+    val bookInfo: BookInfo?
+){
+    constructor():this(null,null)
+}
 
 data class BookInfo(
     @SerializedName("title")
@@ -24,7 +26,7 @@ data class BookInfo(
     val description: String,
 
     @SerializedName("imageLinks")
-    val bookImage: BookImage) {
+    val bookImage: BookImage?) {
 }
 
 data class BookImage(

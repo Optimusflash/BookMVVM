@@ -1,5 +1,6 @@
 package com.example.bookmvvm.viewmodel
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,19 +16,32 @@ class MainViewModel : ViewModel() {
 
     var booksList: MutableLiveData<List<Book>> = MutableLiveData()
 
+
     private var disposeBag = CompositeDisposable()
 
     fun loadBooksFromRepository() {
         isLoading.set(true)
-        val disposable = bookRepository.getBooksFromDB()
+        val disposable = bookRepository.getBooksFromApi()
             .subscribe({
                 booksList.postValue(it)
 
             }, {
-
+                Log.e("ViewModel","Что-то пошло не так... ${it.localizedMessage}" )
             },{
                 isLoading.set(false)
             })
+        disposeBag.add(disposable)
+    }
+
+
+    fun loadPageBooksFromRepository(page: Int){
+        val disposable = bookRepository.getPagBooksFromApi(page).subscribe ({
+            booksList.postValue(it)
+        },{
+            Log.e("ViewModel","Что-то пошло не так... ${it.localizedMessage}" )
+        },{
+
+        })
         disposeBag.add(disposable)
     }
 

@@ -13,8 +13,18 @@ class BookRepository {
     //private val bookDao = App.appDataBaseInstance().getBookDao()
     private val bookService = App.retrofitClientInstance().create(BookService::class.java)
 
-    fun getBooksFromDB(): Observable<List<Book>> {
-        val observable = bookService.getAllBooks("Warcraft",0,10)
+    fun getBooksFromApi(): Observable<List<Book>> {
+        val observable = bookService.getAllBooks("Warcraft", 0, 10)
+        return observable.flatMap {
+            Observable.just(it.bookItems)
+        }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getPagBooksFromApi(page: Int): Observable<List<Book>> {
+        val observable =
+            bookService.getAllBooks("Warcraft", pagStartIndex = page, pagMaxResults = 10)
         return observable.flatMap {
             Observable.just(it.bookItems)
         }
